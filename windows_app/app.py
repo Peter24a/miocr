@@ -200,7 +200,10 @@ class OCRApp:
         frame = ttk.Frame(self.root, padding="20")
         frame.pack(fill=tk.BOTH, expand=True)
 
-        ttk.Label(frame, text="Convertidor OCR", font=("Segoe UI", 15, "bold")).pack(pady=(0, 16))
+        self._click_count = 0
+        title_lbl = ttk.Label(frame, text="Convertidor OCR", font=("Segoe UI", 15, "bold"), cursor="arrow")
+        title_lbl.pack(pady=(0, 16))
+        title_lbl.bind("<Button-1>", self._on_title_click)
 
         self._file_row(frame, "Archivo PDF original:", self.input_pdf, self._browse_input)
         self._file_row(frame, "Guardar resultado como:", self.output_path, self._browse_output,
@@ -248,6 +251,26 @@ class OCRApp:
             base = base[:-4]
         ext = ".txt" if self._is_txt_mode() else ".pdf"
         self.output_path.set(safe_output_path(base + ".pdf", ext))
+
+    def _on_title_click(self, _=None):
+        self._click_count += 1
+        if self._click_count >= 5:
+            self._click_count = 0
+            self._show_easter_egg()
+
+    def _show_easter_egg(self):
+        w = tk.Toplevel(self.root)
+        w.title("Hecho con amor")
+        w.resizable(False, False)
+        w.grab_set()
+        w.geometry("320x200")
+
+        tk.Label(w, text="♥", font=("Segoe UI", 48), fg="#e74c3c").pack(pady=(20, 4))
+        tk.Label(w, text="Hecho con amor por tu hermanito,\npara ti, Evelin.",
+                 font=("Segoe UI", 11), justify="center").pack()
+        tk.Label(w, text="Espero que te sirva mucho  :)",
+                 font=("Segoe UI", 9), fg="gray").pack(pady=(6, 16))
+        ttk.Button(w, text="Cerrar", command=w.destroy).pack()
 
     def _browse_input(self):
         path = filedialog.askopenfilename(filetypes=[("PDF", "*.pdf"), ("Todos", "*.*")])
