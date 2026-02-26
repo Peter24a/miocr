@@ -1,0 +1,26 @@
+# Entornos virtuales de Python
+venv/
+env/
+.env
+__pycache__/
+*.pyc
+*.pyo
+
+# Archivos propios de macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Archivos de PyInstaller (Compilación Windows)
+windows_app/build/
+windows_app/dist/
+windows_app/*.spec
+
+# Archivos generados temporalmente o de salida de la app
+*OCR.pdf
+*OCR.docx
+test_output.pdf
+
+# Herramientas de IDE
+.vscode/
+.idea/
