@@ -15,6 +15,7 @@ __pycache__/
 windows_app/build/
 windows_app/dist/
 windows_app/*.spec
+windows_app/tesseract/
 
 # Archivos generados temporalmente o de salida de la app
 *OCR.pdf
@@ -24,3 +25,4 @@ test_output.pdf
 # Herramientas de IDE
 .vscode/
 .idea/
+.claude/
