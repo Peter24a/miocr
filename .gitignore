@@ -3,24 +3,35 @@ venv/
 env/
 .env/
 .venv/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
+ENV/
+env.bak/
+venv.bak/
 
-# Archivos de compilacion y distribución
+# Bytecode y cache de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyd
+.pytest_cache/
+.coverage
+
+# Archivos de compilacion y distribucion
+build/
+dist/
 windows_app/build/
 windows_app/dist/
-windows_app/*.spec
 windows_app/tesseract/
+windows_app/*.spec
 *.spec
 *.exe
 *.zip
 *.7z
 *.rar
 *.tar.gz
+*.whl
 
-# Herramientas auxiliares temporales
+# Logs y herramientas auxiliares temporales
+*.log
 7za/
 7z_installed/
 7z_latest/
@@ -35,7 +46,7 @@ Thumbs.db
 ehthumbs.db
 [Dd]esktop.ini
 
-# Archivos generados temporalmente o salidas de prueba / OCR
+# Archivos de entrada/salida y pruebas (PDFs, Word, TXT temporales)
 *.pdf
 *.docx
 *OCR.pdf
@@ -44,8 +55,11 @@ ehthumbs.db
 test_sample*
 test_output*
 
-# Herramientas de IDE
+# Herramientas de IDE y editores
 .vscode/
 .idea/
 .claude/
 .gemini/
+*.swp
+*.swo
+*~
