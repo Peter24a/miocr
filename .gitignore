@@ -1,28 +1,51 @@
-# Entornos virtuales de Python
+﻿# Entornos virtuales de Python
 venv/
 env/
-.env
+.env/
+.venv/
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
 
-# Archivos propios de macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Archivos de PyInstaller (Compilación Windows)
+# Archivos de compilacion y distribución
 windows_app/build/
 windows_app/dist/
 windows_app/*.spec
 windows_app/tesseract/
+*.spec
+*.exe
+*.zip
+*.7z
+*.rar
+*.tar.gz
 
-# Archivos generados temporalmente o de salida de la app
+# Herramientas auxiliares temporales
+7za/
+7z_installed/
+7z_latest/
+7za*
+7z*
+
+# Archivos propios del sistema operativo
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+
+# Archivos generados temporalmente o salidas de prueba / OCR
+*.pdf
+*.docx
 *OCR.pdf
 *OCR.docx
-test_output.pdf
+*OCR.txt
+test_sample*
+test_output*
 
 # Herramientas de IDE
 .vscode/
 .idea/
 .claude/
+.gemini/

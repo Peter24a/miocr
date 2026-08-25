@@ -1,32 +1,56 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 
-set VENV=..\env\Scripts
-set APP_NAME=OCR_App
-set DIST=dist\%APP_NAME%
+echo ===================================================
+echo   Compilador y Empaquetador - OCR Magico
+echo ===================================================
+echo.
 
-echo [1/3] Instalando dependencias...
-%VENV%\pip install -r requirements.txt --quiet
+:: Detectar ejecutable de Python
+set "PYTHON_EXE="
 
-echo [2/3] Compilando con PyInstaller...
-%VENV%\pyinstaller ^
-    --noconfirm ^
-    --onedir ^
-    --windowed ^
-    --name "%APP_NAME%" ^
-    app.py
+if exist "..\.venv\Scripts\python.exe" (
+    set "PYTHON_EXE=..\.venv\Scripts\python.exe"
+) else if exist "..\venv\Scripts\python.exe" (
+    set "PYTHON_EXE=..\venv\Scripts\python.exe"
+) else if exist "..\env\Scripts\python.exe" (
+    set "PYTHON_EXE=..\env\Scripts\python.exe"
+) else if exist ".venv\Scripts\python.exe" (
+    set "PYTHON_EXE=.venv\Scripts\python.exe"
+) else (
+    where python >nul 2>nul
+    if %errorlevel% equ 0 (
+        set "PYTHON_EXE=python"
+    )
+)
 
-if errorlevel 1 (
-    echo ERROR: Fallo la compilacion.
+if "%PYTHON_EXE%"=="" (
+    echo [ERROR] No se encontro Python ni un entorno virtual (.venv/venv).
+    echo Por favor instala Python 3.10+ o crea un entorno virtual.
     pause
     exit /b 1
 )
 
-echo [3/3] Copiando Tesseract al distribuible...
-xcopy /E /I /Q tesseract "%DIST%\tesseract"
+echo Usando Python: %PYTHON_EXE%
+echo.
+echo [1/2] Verificando dependencias...
+"%PYTHON_EXE%" -m pip install -r requirements.txt --quiet
 
 echo.
-echo Listo. El ejecutable esta en: %DIST%\
-echo Comparte toda la carpeta "%APP_NAME%" para que funcione en cualquier PC.
+echo [2/2] Ejecutando empaquetador...
+"%PYTHON_EXE%" package.py
+
+if errorlevel 1 (
+    echo.
+    echo [ERROR] Ocurrio un error durante la compilacion.
+    pause
+    exit /b 1
+)
+
+echo.
+echo ===================================================
+echo Proceso finalizado.
+echo El ZIP listo para compartir esta en: dist\OCR_App_Windows_x64.zip
+echo ===================================================
 echo.
 pause

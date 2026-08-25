@@ -1,23 +1,45 @@
-# Herramienta de OCR para Windows
+# 📄 Herramienta de OCR para Windows
 
-Dado que el motor "Apple Vision" es exclusivo de Mac, este programa utiliza **Tesseract OCR**, que es el motor de reconocimiento óptico de código abierto más utilizado y estable disponible para Windows.
+Esta versión para Windows utiliza **Tesseract OCR** optimizado y una interfaz gráfica en Python (`tkinter` / `ttk`) para procesar documentos PDF y convertirlos en archivos PDF con texto seleccionable/buscable o en archivos de texto plano (`.txt`).
 
-## Instrucciones de Instalación y Compilación para Windows
+---
 
-Sigue estos pasos **desde tu computadora con Windows** para generar tu archivo `.exe`:
+## Opción 1: Descargar el Ejecutable Listo para Usar (Recomendado)
 
-### Paso 1: Instalar Python y Tesseract
-1. Instala **Python** (versión 3.10 o superior) desde python.org (Asegúrate de marcar "Add Python to PATH" durante la instalación).
-2. Descarga e instala **Tesseract OCR para Windows**:
-   - Enlace oficial de descarga: [Tesseract OCR Installer](https://github.com/UB-Mannheim/tesseract/wiki)
-   - Descarga la versión de 64 bits (`tesseract-ocr-w64-setup-5.3.3.exe`).
-   - Durante la instalación, expande "Additional language data (download)" y asegúrate de seleccionar **Spanish** (Español).
-   - Instálalo en la ruta por defecto (`C:\Program Files\Tesseract-OCR\`).
+Si solo quieres usar la aplicación sin instalar Python ni compilar nada:
 
-### Paso 2: Generar el archivo .exe
-1. Copia toda la carpeta `windows_app` a tu computadora Windows.
-2. Abre la carpeta `windows_app` y haz doble clic en el archivo **`build.bat`**.
-3. Verás que se abre una terminal instalando cosas. Al terminar, aparecerá una nueva carpeta llamada `dist`.
-4. ¡Listo! Dentro de la carpeta `dist` encontrarás tu archivo **`OCR_App.exe`**.
+1. Ve a la sección de **[Releases / Lanzamientos](https://github.com/Peter24a/miocr/releases)** del repositorio.
+2. Descarga el archivo **`OCR_App_Windows_x64.zip`**.
+3. Descomprime la carpeta en tu computadora (por ejemplo, en el Escritorio).
+4. Haz doble clic en **`OCR_App.exe`** y ¡listo! Ya incluye el motor OCR en español e inglés sin requerir configuración adicional.
 
-> **Nota**: Puedes arrastrar tu `.exe` al Escritorio y ya no necesitarás Python ni la carpeta original (el ejecutable es independiente, aunque siempre requerirá que Tesseract siga instalado en `C:\Program Files\Tesseract-OCR\`).
+---
+
+## Opción 2: Compilar desde el Código Fuente
+
+Si eres desarrollador y deseas modificar el código o generar tu propio ejecutable:
+
+### Requisitos Previos
+1. **Python 3.10 o superior** instalado con la opción "Add Python to PATH" marcada.
+2. *(Opcional)* **Tesseract OCR**: Puedes instalarlo en el sistema desde el [instalador oficial de UB-Mannheim](https://github.com/UB-Mannheim/tesseract/wiki) marcando el idioma Español, o colocar los binarios en `windows_app/tesseract`.
+
+### Pasos para Compilar
+
+1. Clona o descarga este repositorio:
+   ```bash
+   git clone https://github.com/Peter24a/miocr.git
+   cd miocr
+   ```
+
+2. Ejecuta el compilador automático:
+   - Haz doble clic en **`windows_app/build.bat`** o ejecuta en PowerShell:
+   ```powershell
+   python -m venv .venv
+   .\.venv\Scripts\pip install -r windows_app/requirements.txt
+   python windows_app/package.py
+   ```
+
+3. El resultado compilado y el archivo portable comprimido se generarán en la carpeta:
+   - `windows_app/dist/OCR_App/` (Carpeta con el `.exe` y dependencias)
+   - `windows_app/dist/OCR_App_Windows_x64.zip` (Paquete portable listo para distribuir)
+

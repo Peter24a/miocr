@@ -1,0 +1,64 @@
+﻿name: Build and Release Windows App
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r windows_app/requirements.txt
+
+      - name: Download & Setup Tesseract OCR binaries
+        shell: pwsh
+        run: |
+          $tessUrl = "https://github.com/UB-Mannheim/tesseract/releases/download/v5.4.0.20240606/tesseract-ocr-w64-setup-5.4.0.20240606.exe"
+          $installer = "$env:RUNNER_TEMP\tesseract-setup.exe"
+          Invoke-WebRequest -Uri $tessUrl -OutFile $installer
+          
+          # Extract using 7-Zip available on windows-latest runner
+          $tessDir = "windows_app\tesseract"
+          New-Item -ItemType Directory -Force -Path $tessDir | Out-Null
+          7z x $installer -o"$tessDir" -y | Out-Null
+          
+          # Download Spanish traineddata
+          $spaUrl = "https://github.com/tesseract-ocr/tessdata_fast/raw/main/spa.traineddata"
+          $tessDataDir = "$tessDir\tessdata"
+          New-Item -ItemType Directory -Force -Path $tessDataDir | Out-Null
+          Invoke-WebRequest -Uri $spaUrl -OutFile "$tessDataDir\spa.traineddata"
+
+      - name: Build & Package Windows Distribution
+        run: |
+          python windows_app/package.py
+
+      - name: Create Release and Upload Assets
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: "OCR Mágico ${{ github.ref_name }}"
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            windows_app/dist/OCR_App_Windows_x64.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
