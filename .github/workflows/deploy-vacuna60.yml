@@ -25,3 +25,5 @@ jobs:
           path: ./public
       - name: URL
         run: echo "PUBLIC_URL=${{ steps.deploy.outputs.url }}"
+
+# Trigger deployment
