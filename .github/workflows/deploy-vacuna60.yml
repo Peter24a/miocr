@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
     paths: [".github/workflows/deploy-vacuna60.yml"]
+  issues:
+    types: [opened]
   workflow_dispatch:
 
 permissions:
@@ -11,6 +13,7 @@ permissions:
 
 jobs:
   deploy:
+    if: github.event_name != 'issues' || contains(github.event.issue.title, 'DEPLOY VACUNA60')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,5 +28,3 @@ jobs:
           path: ./public
       - name: URL
         run: echo "PUBLIC_URL=${{ steps.deploy.outputs.url }}"
-
-# Trigger deployment
